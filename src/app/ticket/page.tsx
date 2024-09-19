@@ -53,6 +53,7 @@ export default function Page({}: Props) {
   };
 
   const fetchData = async () => {
+ 
     // Fetch updated dropdown data for students and professors
     try {
       const response = await axios.get('http://localhost:3000/api/addtickets?email=' + session?.user?.email);
@@ -66,7 +67,14 @@ export default function Page({}: Props) {
   const { data: session, status } = useSession(); // Hook to access session
   const authenticated = session && status === AUTH;
   const router = useRouter();
-  console.log(status);
+
+;
+  const [selectedTicket, setSelectedTicket] = useState<Ticket>();
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [isFormOpen, setIsFormOpen] = useState(false); 
+  const [students, setStudents] = useState<string[]>([]); // Students array
+  const [professors, setProfessors] = useState<string[]>([]); // Professors array
+
   useEffect(() => {
     if (status === UNAUTH) {
       router.push("/error");
@@ -76,14 +84,7 @@ export default function Page({}: Props) {
       fetchTicketData();
       fetchData(); // Fetch dropdown data initially
     }
-  }, [status]);
-  const [selectedTicket, setSelectedTicket] = useState<Ticket>();
-  const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [isFormOpen, setIsFormOpen] = useState(false); 
-  const [students, setStudents] = useState<string[]>([]); // Students array
-  const [professors, setProfessors] = useState<string[]>([]); // Professors array
-  console.log(tickets);
-
+  }, [status])
   return (
     authenticated &&
     tickets &&
@@ -102,7 +103,7 @@ export default function Page({}: Props) {
                  <TicketForm 
                     setIsFormOpen={setIsFormOpen} 
                     isFormOpen={isFormOpen} 
-                    refreshData={fetchData}  // Pass the refresh function to the form
+                    refreshData={fetchTicketData}  // Pass the refresh function to the form
                     students={students} // Pass students to the form
                     professors={professors} // Pass professors to the form
                  />
