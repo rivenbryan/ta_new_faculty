@@ -1,0 +1,5 @@
+export const PROFESSOR = "professor"
+export const TA = "ta"
+export const DATABASE_USER = "users"
+export const AUTH = "authenticated"
+export const UNAUTH = "unauthenticated"
